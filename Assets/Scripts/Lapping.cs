@@ -110,6 +110,8 @@ public class Lapping : MonoBehaviour {
 		Teams.Add ("Schumacher", 2);
 		Teams.Add ("Kitano", 5);
 		Teams.Add ("Conrad", 6);
+        Teams.Add("Alfa Romeo", 5);
+        Teams.Add("Force One", 5);
 
 		raceDistance = 12;
 

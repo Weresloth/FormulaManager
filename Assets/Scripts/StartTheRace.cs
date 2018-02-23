@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using TMPro;
 
 public class StartTheRace : MonoBehaviour {
 
@@ -10,10 +11,10 @@ public class StartTheRace : MonoBehaviour {
 	public GameObject[] Cars; 
 	public GameObject StartPosition;
 	public GameObject[] Position;
-	public Text[] DriverNames;
-	public Text[] Status;
-	public Text[] Laps;
-	private Text DriverName;
+	public TMP_Text[] DriverNames;
+	public TMP_Text[] Status;
+	public TMP_Text[] Laps;
+	private TMP_Text DriverName;
 	public GameObject[] PitBoxes;
 	private int raceFinished = 0;
 
