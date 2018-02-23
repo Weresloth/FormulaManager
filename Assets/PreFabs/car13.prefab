@@ -109,7 +109,7 @@ MonoBehaviour:
   debugTestSpeed: 0
   driverskill: 2
   qualifyingNumber: 3
-  mistakeSkill: 97
+  mistakeSkill: 96
   crashRate: 3
   drivername: Smith
   driverShort: CS

@@ -131,7 +131,7 @@ public class Lapping : MonoBehaviour {
 				if (GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().drivername != drivername && GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().teamname == teamname) {
 
 					TheOtherCarFuel = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().fuel;
-					fuel = TheOtherCarFuel + 15f;
+					fuel = TheOtherCarFuel + 10f;
 
 				}
 

@@ -93,7 +93,7 @@ MonoBehaviour:
   car: {fileID: 1955835884581856}
   carspeed: 0.3
   lap: 1
-  fuel: 45
+  fuel: 30
   distanceTraveled: 0
   driverspeed: 20
   crashEnabled: 0
