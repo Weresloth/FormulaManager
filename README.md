@@ -1,2 +1,2 @@
 # FormulaManager
-A personel F1 manager game project
+A personal F1 manager game project. 
