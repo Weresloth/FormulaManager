@@ -14,7 +14,10 @@ public class StartTheRace : MonoBehaviour {
 	public TMP_Text[] DriverNames;
 	public TMP_Text[] Status;
 	public TMP_Text[] Laps;
-	private TMP_Text DriverName;
+    public TMP_Text[] TeamNames;
+    public TMP_Text[] Gaps;
+    private TMP_Text DriverName;
+    private TMP_Text teamColor;
 	public GameObject[] PitBoxes;
 	private int raceFinished = 0;
 
@@ -75,8 +78,9 @@ public class StartTheRace : MonoBehaviour {
 		
 			//DriverName.text = (Cars [i].GetComponent<Lapping> ().drivername).ToString();
 			DriverNames[i].text = (Cars [i].GetComponent<Lapping>().drivername).ToString();
-		
-		}
+            TeamNames[i].text = (Cars[i].GetComponent<Lapping>().teamname).ToString();
+            TeamNames[i].color = Cars[i].GetComponent<Lapping>().teamColor;
+        }
 
 
 
@@ -95,15 +99,19 @@ public class StartTheRace : MonoBehaviour {
 
 				//Debug.Log ("Inside the for loop now...");
 				DriverNames[i].text = (Cars [i].GetComponent<Lapping> ().drivername).ToString();
+                TeamNames[i].text = (Cars[i].GetComponent<Lapping>().teamname).ToString();
+                TeamNames[i].color = Cars[i].GetComponent<Lapping>().teamColor;
+                Laps[i].text = (Cars[i].GetComponent<Lapping>().lap).ToString();
+                Status[i].text = Cars[i].GetComponent<Lapping>().status;
 
                 if (i != 0)
                 {
-                    Status[i].text = (Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled).ToString();
+                    Gaps[i].text = (Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled).ToString();
 
 
                 } else if (i == 0){
 
-                    Status[i].text = "leader";
+                    Gaps[i].text = "leader";
                 }
 
                              
@@ -150,7 +158,7 @@ public class StartTheRace : MonoBehaviour {
 
                 }*/
                 
-                Laps[i].text =  (Cars [i].GetComponent<Lapping> ().lap).ToString();
+                
 		
 			}
 		

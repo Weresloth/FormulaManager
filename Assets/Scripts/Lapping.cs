@@ -28,6 +28,7 @@ public class Lapping : MonoBehaviour {
     private float mistakeChance;
     private float crashChance;
     public int crashEnabled;
+    public float finalDistance;
     
 
 	[Range(1,5)]
@@ -113,7 +114,7 @@ public class Lapping : MonoBehaviour {
         Teams.Add("Alfa Romeo", 5);
         Teams.Add("Force One", 5);
 
-		raceDistance = 12;
+		raceDistance = 5;
 
 		teamSpeed = Teams [teamname];
 
@@ -177,6 +178,7 @@ public class Lapping : MonoBehaviour {
 
 		if (Random.Range (0f, 1000f) <= crashRate && crashEnabled == 1 && isPitting == 0 && fuel > 0 && carHP > 0) {
             Debug.Log(drivername + " has crashed! Oops!");
+            status = "retired";
             isCrashed = 1;
            	carHP = 0;
             carspeed = 0;
@@ -191,7 +193,7 @@ public class Lapping : MonoBehaviour {
 			if ((mistakeSkill + mistakeChance) < 100){
                                 
                 Debug.Log (drivername + " made a mistake!");
-				carHP = carHP - 5;
+                carHP = carHP - 5;
 				driverForm = 0.1f;
 
 			} 
@@ -404,9 +406,14 @@ public class Lapping : MonoBehaviour {
 
         if (raceFinished == 0) {
 			personalTimerTotal = personalTimerTotal + Time.deltaTime;
-		}
+            distanceTraveled = (lap * 10000) + (checkpoints * 100) - (Vector2.Distance(car.transform.position, points[x].transform.position));
+        } else if (raceFinished == 1)
+        {
+            distanceTraveled = finalDistance;
 
-		distanceTraveled = (lap * 10000) + (checkpoints * 100) - (Vector2.Distance(car.transform.position, points[x].transform.position));
+        }
+
+       
 		LastPosition = transform.position;
 
 
@@ -418,11 +425,12 @@ public class Lapping : MonoBehaviour {
                 {
 
                     Debug.Log(drivername + " finished the race!");
+                    finalDistance = distanceTraveled;
                     raceFinished = 1;
                     //distanceTraveled += 5000f;
                     x = 0;
                     gameObject.transform.position = pitBox[pitBoxNumber].transform.position;
-                    isPitting = 1;
+                    isPitting = 1;                    
                     GameObject.Find("racetrack").GetComponent<EndRace>().RaceFinish(gameObject);
                     accelSpeed = 0;
                 }

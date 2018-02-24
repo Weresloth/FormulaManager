@@ -45,7 +45,12 @@ public class EndRace : MonoBehaviour {
 
 	private int EndOfRaceRetirement = 0;
 
+    private float positionSorter;
+
 	void Start() {
+
+
+        positionSorter = 0;
 
 		leaderFinished = 0;
 		resultPanel.SetActive(false);
@@ -131,10 +136,18 @@ public class EndRace : MonoBehaviour {
 	}
 
 	public void RaceFinish(GameObject finishingCar){
-	
-		Debug.Log("We reached to the endrace method, yaay!");
+	    
 
-		gridSize = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length;
+
+		Debug.Log("We reached to the endrace method, yaay!");
+        finishTime = finishingCar.GetComponent<Lapping>().personalTimerTotal;
+        finishingCar.GetComponent<Lapping>().finalDistance = finishingCar.GetComponent<Lapping>().finalDistance + (500 - positionSorter);
+        positionSorter = positionSorter + 20;
+        checkeredFlag = 1;
+        resulted += 1;
+        leaderFinished = 1;
+
+        /*gridSize = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length;
 
 
 		for (int i = 0; i < gridSize; i++) {
@@ -160,13 +173,17 @@ public class EndRace : MonoBehaviour {
 			racePosition = racePosition + 1;
 		
 		}
+        */
 
-		raceResults[racePosition+lapDownPosition] = finishingCar;
+        /*
+        raceResults[racePosition+lapDownPosition] = finishingCar;
 		EndDriverNames [racePosition+lapDownPosition].text = finishingCar.GetComponent<Lapping> ().drivername;
 		EndTeamNames [racePosition+lapDownPosition].text = finishingCar.GetComponent<Lapping> ().teamname;
 		EndPits [racePosition+lapDownPosition].text = (finishingCar.GetComponent<Lapping> ().pitCounter).ToString();
 		EndPoints [racePosition+lapDownPosition].text = (PointAllocation [racePosition+lapDownPosition+1]).ToString ();
+        */
 
+        /*
 		if (racePosition == 0) {
 
 			numberOfLaps = (finishingCar.GetComponent<Lapping> ().raceDistance).ToString();
@@ -203,9 +220,9 @@ public class EndRace : MonoBehaviour {
 
 		itWasALappedCar = 0;
 		lapDownPosition = 0;
+        */
 
-			
-	}
+    }
 
 	public void RetireFromRace(GameObject retiringCar){
 
@@ -234,24 +251,27 @@ public class EndRace : MonoBehaviour {
 
 
 		Debug.Log (retiringCar.GetComponent<Lapping> ().drivername + " has retired!");
-		raceResults [retirePosition] = retiringCar;
+        resulted += 1;
+        StartCoroutine(retireWait(retiringCar));
+
+        /*raceResults [retirePosition] = retiringCar;
 		EndDriverNames [retirePosition].text = retiringCar.GetComponent<Lapping> ().drivername;
 		EndTeamNames [retirePosition].text = retiringCar.GetComponent<Lapping> ().teamname;
 		EndGaps [retirePosition].text = retiringCar.GetComponent<Lapping>().status +" lap "+((retiringCar.GetComponent<Lapping>().lap)-1).ToString(); 
 		EndPits [retirePosition].text = (retiringCar.GetComponent<Lapping> ().pitCounter).ToString();
-		EndPoints [retirePosition].text = (PointAllocation [retirePosition+1]).ToString ();
-		resulted += 1;
-		/*if (EndOfRaceRetirement != 0) {
+		EndPoints [retirePosition].text = (PointAllocation [retirePosition+1]).ToString ();*/
+
+        /*if (EndOfRaceRetirement != 0) {
 			retirePosition = pseudoRetire;
 			pseudoRetire = 0;
 			EndOfRaceRetirement = 0;
 		} else if (EndOfRaceRetirement == 0) {
 			retirePosition = retirePosition + 1;		
 		}*/
-		retirePosition = retirePosition - 1;
+        //retirePosition = retirePosition - 1;
 
 
-		StartCoroutine (retireWait(retiringCar));
+		
 
 	}
 

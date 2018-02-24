@@ -97,6 +97,7 @@ MonoBehaviour:
   distanceTraveled: 0
   driverspeed: 20
   crashEnabled: 0
+  finalDistance: 0
   paceNumber: 1
   revNumber: 1
   status: 
@@ -106,7 +107,7 @@ MonoBehaviour:
   raceDistance: 0
   raceFinished: 0
   pitCounter: 0
-  debugTestSpeed: 0
+  debugTestSpeed: 1
   driverskill: 3
   qualifyingNumber: 1
   mistakeSkill: 98
