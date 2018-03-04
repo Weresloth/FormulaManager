@@ -20,6 +20,7 @@ public class StartTheRace : MonoBehaviour {
     private TMP_Text teamColor;
 	public GameObject[] PitBoxes;
 	private int raceFinished = 0;
+    public float pitLaneGapDistance;
 
 
     private float timeMinutesSelf;
@@ -33,18 +34,40 @@ public class StartTheRace : MonoBehaviour {
     private float timeGapMinutes;
     private float timeGapSeconds;
     private float timeGapFractions;
-    
+
+    public static GameObject smoke;
+    public static GameObject mistake;
+    public GameObject smokeSprite;
+    public GameObject mistakeSprite;
+
+    public static float raceTimer;
+    private int raceStarted = 0;
 
 
-	public void RaceStart(){			 
+	public void RaceStart(){
+
+        raceStarted = 1;
+        smoke = smokeSprite;
+        mistake = mistakeSprite;
 
 		Debug.Log ("Start Button is pushed!");
 		StartCoroutine (StartWait());
 
 	}
 
-	
-	IEnumerator StartWait(){
+
+
+    public void FixedUpdate()
+    {
+
+        if (raceStarted == 1) {
+
+            raceTimer = raceTimer + Time.deltaTime;
+        } 
+
+    }
+
+    IEnumerator StartWait(){
 	
 		for (int i = 0; i < Cars.Length; i++) {
 
@@ -101,17 +124,42 @@ public class StartTheRace : MonoBehaviour {
 				DriverNames[i].text = (Cars [i].GetComponent<Lapping> ().drivername).ToString();
                 TeamNames[i].text = (Cars[i].GetComponent<Lapping>().teamname).ToString();
                 TeamNames[i].color = Cars[i].GetComponent<Lapping>().teamColor;
-                Laps[i].text = (Cars[i].GetComponent<Lapping>().lap).ToString();
+                Laps[i].text = (Cars[i].GetComponent<Lapping>().pitCounter).ToString();
                 Status[i].text = Cars[i].GetComponent<Lapping>().status;
 
                 if (i != 0)
                 {
-                    Gaps[i].text = (Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled).ToString();
+
+                    if (Cars[i].GetComponent<Lapping>().isCrashed == 1 || Cars[i].GetComponent<Lapping>().isRetired == 1)
+                    {
+                        Gaps[i].text = "lap " +Cars[i].GetComponent<Lapping>().lap.ToString();
+
+
+                    } else
+                    {
+
+
+
+
+
+                        timeGap = Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled;
+                        timeGap = timeGap * 2;
+                        timeGapSeconds = Mathf.Floor(timeGap / 100);
+                        timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);
+
+                        Gaps[i].text = string.Format("+{0:00}.{1:000}", timeGapSeconds, timeGapFractions);
+                    }
+
+                    //timeGap = Cars[0].GetComponent<Lapping>().distanceGap - Cars[i].GetComponent<Lapping>().distanceGap;
+                    //timeGapSeconds = Mathf.Floor(timeGap);
+                    //timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);                    
+                     
+                    //Gaps[i].text = (Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled).ToString();
 
 
                 } else if (i == 0){
 
-                    Gaps[i].text = "leader";
+                    Gaps[i].text = "lap " + Cars[i].GetComponent<Lapping>().lap.ToString();
                 }
 
                              

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cars
   - RunOff
+  - Smoke
   layers:
   - Default
   - TransparentFX

@@ -7517,7 +7517,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Lap
+  m_text: Pits
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
@@ -7584,7 +7584,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 286038371}
-    characterCount: 3
+    characterCount: 4
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -36983,6 +36983,11 @@ MonoBehaviour:
   - {fileID: 654539089}
   - {fileID: 1110560933}
   - {fileID: 858858950}
+  pitLaneGapDistance: 15
+  smokeSprite: {fileID: 1780183432463768, guid: b1b156966652c0c4ebc187ba1b61c2dc,
+    type: 2}
+  mistakeSprite: {fileID: 1821178796493374, guid: 448e818a2f9da44468a211afffa1126e,
+    type: 2}
 --- !u!114 &1384205736
 MonoBehaviour:
   m_ObjectHideFlags: 0

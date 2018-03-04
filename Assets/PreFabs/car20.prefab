@@ -97,9 +97,13 @@ MonoBehaviour:
   distanceTraveled: 0
   driverspeed: 20
   crashEnabled: 0
+  finalDistance: 0
+  distanceGap: 0
   paceNumber: 1
   revNumber: 1
   status: 
+  isRetired: 0
+  isCrashed: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -111,13 +115,14 @@ MonoBehaviour:
   qualifyingNumber: 5
   mistakeSkill: 97
   crashRate: 3
-  drivername: Dhilvar
-  driverShort: AD
+  drivername: Nato
+  driverShort: NN
   teamname: Schumacher
   carNumber: 0
   pitBoxNumber: 9
   teamColor: {r: 0.024005214, g: 0.8161765, b: 0.29170457, a: 1}
   teamColor2: {r: 1, g: 1, b: 1, a: 1}
+  enginename: Audi
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1
