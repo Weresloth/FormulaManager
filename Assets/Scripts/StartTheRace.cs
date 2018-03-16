@@ -23,6 +23,10 @@ public class StartTheRace : MonoBehaviour {
     public float pitLaneGapDistance;
 
 
+    public GameObject pitStopPanel1;
+    public GameObject pitStopPanel2;
+
+
     private float timeMinutesSelf;
     private float timeSecondsSelf;
     private float timeFractionsSelf;
@@ -72,13 +76,14 @@ public class StartTheRace : MonoBehaviour {
 		for (int i = 0; i < Cars.Length; i++) {
 
 			Cars[i] = Instantiate (Cars[i], Position[0].transform.position, Quaternion.identity);
-			yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(0.1f);
 
 
 		}
 	
 		StartCoroutine (RaceStandings ());
-        
+        GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().ApplyTheStart();
+        //GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().ApplyTheStart();
 
     }
 
@@ -92,14 +97,14 @@ public class StartTheRace : MonoBehaviour {
 			}
 	
 
-	public void QualifyingOrder(){	
-	
-		Cars = Cars.OrderBy(x=>x.GetComponent<Lapping>().qualifyingNumber * Random.Range(0.5f, 2f)).ToArray();
+	public void QualifyingOrder(){
+
+
+        Cars = Cars.OrderBy(x=>x.GetComponent<Lapping>().qualifyingNumber * Random.Range(0.5f, 2f)).ToArray();
 
 
 		for (int i = 0; i < Cars.Length; i++) {
 		
-			//DriverName.text = (Cars [i].GetComponent<Lapping> ().drivername).ToString();
 			DriverNames[i].text = (Cars [i].GetComponent<Lapping>().drivername).ToString();
             TeamNames[i].text = (Cars[i].GetComponent<Lapping>().teamname).ToString();
             TeamNames[i].color = Cars[i].GetComponent<Lapping>().teamColor;
@@ -120,7 +125,6 @@ public class StartTheRace : MonoBehaviour {
 
 			for (int i = 0; i < Cars.Length; i++) {
 
-				//Debug.Log ("Inside the for loop now...");
 				DriverNames[i].text = (Cars [i].GetComponent<Lapping> ().drivername).ToString();
                 TeamNames[i].text = (Cars[i].GetComponent<Lapping>().teamname).ToString();
                 TeamNames[i].color = Cars[i].GetComponent<Lapping>().teamColor;
@@ -132,7 +136,7 @@ public class StartTheRace : MonoBehaviour {
 
                     if (Cars[i].GetComponent<Lapping>().isCrashed == 1 || Cars[i].GetComponent<Lapping>().isRetired == 1)
                     {
-                        Gaps[i].text = "lap " +Cars[i].GetComponent<Lapping>().lap.ToString();
+                        Gaps[i].text = "lap " +(Cars[i].GetComponent<Lapping>().lap-1).ToString();
 
 
                     } else
@@ -140,22 +144,52 @@ public class StartTheRace : MonoBehaviour {
 
 
 
+                        if (Cars[i].GetComponent<Lapping>().lap < Cars[0].GetComponent<Lapping>().lap)
+                        {
 
 
-                        timeGap = Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled;
-                        timeGap = timeGap * 2;
-                        timeGapSeconds = Mathf.Floor(timeGap / 100);
-                        timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);
+                            if (Cars[i].GetComponent<Lapping>().raceFinished == 0)
+                            {
 
-                        Gaps[i].text = string.Format("+{0:00}.{1:000}", timeGapSeconds, timeGapFractions);
+
+                                Debug.Log("We are in the -200 part!");
+                                timeGap = Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled;
+                                timeGap = timeGap * 2;                                
+                                timeGapSeconds = Mathf.Floor(timeGap / 100);
+                                timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);
+
+                                timeGapSeconds = timeGapSeconds - 200f;
+
+                                Gaps[i].text = string.Format("+{0:00}.{1:000}", timeGapSeconds, timeGapFractions);
+
+                            }
+                            else
+                            {
+
+                                Gaps[i].text = "-" + (Cars[0].GetComponent<Lapping>().lap - Cars[i].GetComponent<Lapping>().lap).ToString() + " lap";
+
+                            }
+
+                            
+
+
+                        } else
+                        {
+
+                            timeGap = Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled;
+                            timeGap = timeGap * 2;
+                            timeGapSeconds = Mathf.Floor(timeGap / 100);
+                            timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);
+
+                            Gaps[i].text = string.Format("+{0:00}.{1:000}", timeGapSeconds, timeGapFractions);
+
+
+
+                        }
+
+
+                        
                     }
-
-                    //timeGap = Cars[0].GetComponent<Lapping>().distanceGap - Cars[i].GetComponent<Lapping>().distanceGap;
-                    //timeGapSeconds = Mathf.Floor(timeGap);
-                    //timeGapFractions = Mathf.Floor((timeGap * 1000f) % 1000f);                    
-                     
-                    //Gaps[i].text = (Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled).ToString();
-
 
                 } else if (i == 0){
 
@@ -164,47 +198,7 @@ public class StartTheRace : MonoBehaviour {
 
                              
                 
-                /*if (i != 0)
-                {
-                    timeRaw = Cars[0].GetComponent<Lapping>().personalTimer;
-                    timeRawSelf = Cars[i].GetComponent<Lapping>().personalTimer;
-                    timeGap = timeRaw - timeRawSelf;
-
-                    if (timeGap < 60)
-                    {
-                        timeGapSeconds = Mathf.Floor(timeGap);
-                        timeGapFractions = Mathf.Floor((timeGap * 1000) % 1000);
-                        Status[i].text = string.Format("+{0:00}.{1:000}", timeGapSeconds, timeGapFractions);
-                    }
-                    else
-                    {
-                        timeGap = timeGap - 60;
-                        timeGapSeconds = Mathf.Floor(timeGap);
-                        timeGapFractions = Mathf.Floor((timeGap * 1000) % 1000);
-                        Status[i].text = "+1:"+timeGapSeconds.ToString() + "." + timeGapFractions.ToString();
-                    }
-
-
-                } else if (i == 0)
-                {
-
-                    timeRawSelf = Cars[i].GetComponent<Lapping>().personalTimer;
-                    if (timeRawSelf < 60)
-                    {
-                        timeSecondsSelf = Mathf.Floor(timeRawSelf);
-                        timeFractionsSelf = Mathf.Floor((timeRawSelf * 1000) % 1000);
-                        Status[i].text = timeSecondsSelf.ToString() + "." + timeFractionsSelf.ToString();
-                    }
-                    else
-                    {
-                        timeRawSelf = timeRawSelf - 60;
-                        timeSecondsSelf = Mathf.Floor(timeRawSelf);
-                        timeFractionsSelf = Mathf.Floor((timeRawSelf * 1000) % 1000);
-                        Status[i].text = "1:" + timeSecondsSelf.ToString() + "." + timeFractionsSelf.ToString();
-                    }
-
-
-                }*/
+                
                 
                 
 		
@@ -215,6 +209,49 @@ public class StartTheRace : MonoBehaviour {
 		}
 
 	}
+
+
+    public void PitDropdown1()
+    {
+
+
+        if (pitStopPanel1.activeSelf == false)
+        {
+
+            pitStopPanel1.SetActive(true);
+
+        }
+        else
+        {
+
+            pitStopPanel1.SetActive(false);
+
+        }
+
+
+    }
+
+    public void PitDropdown2()
+    {
+
+
+        if (pitStopPanel2.activeSelf == false)
+        {
+
+            pitStopPanel2.SetActive(true);
+
+        }
+        else
+        {
+
+            pitStopPanel2.SetActive(false);
+
+        }
+
+
+    }
+
+
 
 
 }

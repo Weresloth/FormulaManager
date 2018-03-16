@@ -99,11 +99,16 @@ MonoBehaviour:
   crashEnabled: 0
   finalDistance: 0
   distanceGap: 0
+  tyreSpeed: 0
+  finishTime: 0
+  playerCar1: 0
+  playerCar2: 0
   paceNumber: 1
   revNumber: 1
   status: 
   isRetired: 0
   isCrashed: 0
+  isEngineDied: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -111,6 +116,7 @@ MonoBehaviour:
   raceFinished: 0
   pitCounter: 0
   debugTestSpeed: 0
+  tyreCompound: 
   driverskill: 3
   qualifyingNumber: 1
   mistakeSkill: 98

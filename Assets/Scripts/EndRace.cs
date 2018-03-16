@@ -31,17 +31,9 @@ public class EndRace : MonoBehaviour {
 
 	private int raceLeaderLap;
 
-	public int leaderFinished;
+	public int leaderFinished;	
 
-	private int lapDownPosition = 0;
-
-	private int gridSize;
-
-	private int itWasALappedCar = 0;
-
-	private int LapDownFix = 0;
-
-	private int pseudoRetire = 0;
+	private int gridSize;	
 
 	private int EndOfRaceRetirement = 0;
 
@@ -104,31 +96,10 @@ public class EndRace : MonoBehaviour {
 
 		retiredCar.transform.position = closest.transform.position;
 
-		/*float distance = Mathf.Infinity;
-		Vector3 position = transform.position;
-		foreach (GameObject go in gos)
-		{
-			Vector3 diff = go.transform.position - position;
-			float curDistance = diff.sqrMagnitude;
-			if (curDistance < distance)
-			{
-				closest = go;
-				distance = curDistance;
-			}
-		}
-		return closest;
-		gameObject.transform.position = */
-
+		
 	}
 
 	public void Update(){
-
-		if (checkeredFlag == 1) {
-
-			Debug.Log ("calculating TIME!(Killing CPU)");
-			finishTime += Time.deltaTime;
-					
-		}
 
 		if (resulted >= GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length)
 			checkeredFlag = 0;
@@ -140,161 +111,23 @@ public class EndRace : MonoBehaviour {
 
 
 		Debug.Log("We reached to the endrace method, yaay!");
-        finishTime = finishingCar.GetComponent<Lapping>().personalTimerTotal;
         finishingCar.GetComponent<Lapping>().finalDistance = finishingCar.GetComponent<Lapping>().finalDistance + (500 - positionSorter);
         finishingCar.GetComponent<Lapping>().status = "finished";
-        positionSorter = positionSorter + 20;
         checkeredFlag = 1;
         resulted += 1;
         leaderFinished = 1;
 
-        /*gridSize = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length;
-
-
-		for (int i = 0; i < gridSize; i++) {
-
-			if (finishingCar.GetComponent<Lapping> ().lap < GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().lap && GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().raceFinished == 0) {
-
-				lapDownPosition = lapDownPosition + 1;
-				//LapDownFix = LapDownFix + 1;
-				itWasALappedCar = itWasALappedCar + 1;
-				if (itWasALappedCar > 1) {
-					itWasALappedCar = 1;
-				}
-			} 
-		}
-
-		if (itWasALappedCar == 0) {
-			LapDownFix = 0;
-			}
-
-		lapDownPosition = LapDownFix + lapDownPosition;
-
-		while (EndDriverNames [racePosition + lapDownPosition].text != "") {
-			racePosition = racePosition + 1;
-		
-		}
-        */
-
-        /*
-        raceResults[racePosition+lapDownPosition] = finishingCar;
-		EndDriverNames [racePosition+lapDownPosition].text = finishingCar.GetComponent<Lapping> ().drivername;
-		EndTeamNames [racePosition+lapDownPosition].text = finishingCar.GetComponent<Lapping> ().teamname;
-		EndPits [racePosition+lapDownPosition].text = (finishingCar.GetComponent<Lapping> ().pitCounter).ToString();
-		EndPoints [racePosition+lapDownPosition].text = (PointAllocation [racePosition+lapDownPosition+1]).ToString ();
-        */
-
-        /*
-		if (racePosition == 0) {
-
-			numberOfLaps = (finishingCar.GetComponent<Lapping> ().raceDistance).ToString();
-			EndGaps [racePosition].text = numberOfLaps + " laps";
-			checkeredFlag = 1;
-			resulted += 1;
-			raceLeaderLap = finishingCar.GetComponent<Lapping> ().raceDistance;
-			leaderFinished = 1;
-					
-		} else {
-
-			seconds = finishTime % 60;
-			fraction = (finishTime * 100) % 100;
-
-			if (finishingCar.GetComponent<Lapping> ().lap == raceLeaderLap) {
-				EndGaps [racePosition+lapDownPosition].text = "+" + (Mathf.Round (seconds)).ToString () + "." + (Mathf.Round (fraction)).ToString () + "s";
-			} else {
-				EndGaps [racePosition+lapDownPosition].text = "+" + (finishingCar.GetComponent<Lapping> ().raceDistance - finishingCar.GetComponent<Lapping> ().lap).ToString() + " lap";			
-			}
-
-
-			resulted += 1;
-
-		
-		}
-
-		if (itWasALappedCar == 0) {
-			racePosition = racePosition + 1;
-			LapDownFix = 0;
-		} else if (itWasALappedCar == 1){
-			LapDownFix = LapDownFix + 1;
-
-		}
-
-		itWasALappedCar = 0;
-		lapDownPosition = 0;
-        */
+        
 
     }
 
 	public void RetireFromRace(GameObject retiringCar){
 
-		/*gridSize = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length;
-
-
-		pseudoRetire = retirePosition;
-
-		for (int i = 0; i < gridSize; i++) {
-
-			if (retiringCar.GetComponent<Lapping> ().lap > GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().lap && checkeredFlag == 1) {
-
-
-				retirePosition = retirePosition - 1;
-				EndOfRaceRetirement = 1;
-				if (EndOfRaceRetirement > 1) {
-					EndOfRaceRetirement = 1;
-				}
-				}
-			} 
-
-		while (EndDriverNames [retirePosition].text != "") {
-			retirePosition = retirePosition - 1;
-		}*/
-
-
-
 		Debug.Log (retiringCar.GetComponent<Lapping> ().drivername + " has retired!");
         resulted += 1;
         StartCoroutine(retireWait(retiringCar));
-
-        /*raceResults [retirePosition] = retiringCar;
-		EndDriverNames [retirePosition].text = retiringCar.GetComponent<Lapping> ().drivername;
-		EndTeamNames [retirePosition].text = retiringCar.GetComponent<Lapping> ().teamname;
-		EndGaps [retirePosition].text = retiringCar.GetComponent<Lapping>().status +" lap "+((retiringCar.GetComponent<Lapping>().lap)-1).ToString(); 
-		EndPits [retirePosition].text = (retiringCar.GetComponent<Lapping> ().pitCounter).ToString();
-		EndPoints [retirePosition].text = (PointAllocation [retirePosition+1]).ToString ();*/
-
-        /*if (EndOfRaceRetirement != 0) {
-			retirePosition = pseudoRetire;
-			pseudoRetire = 0;
-			EndOfRaceRetirement = 0;
-		} else if (EndOfRaceRetirement == 0) {
-			retirePosition = retirePosition + 1;		
-		}*/
-        //retirePosition = retirePosition - 1;
-
-
-		
-
-	}
-
-
-	public void ShowResults(){
-	
-
-		if (resultPanel.activeSelf == false) {
-
-			resultPanel.SetActive (true);
-	
-		} else {
-		
-			resultPanel.SetActive (false);
-		
-		}
-
-
-	}
-
-
-
-
+      	
+        }
+        
 
 }

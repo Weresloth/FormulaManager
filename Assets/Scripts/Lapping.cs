@@ -13,15 +13,15 @@ public class Lapping : MonoBehaviour {
 	private int x = 0;
 	public int lap = 1;
     private int checkpoints = 0;
-	private float tyreHP;
+	public float tyreHP;
 	public float fuel;
 	private float carHP;
     public float distanceTraveled;
 	private Vector2 LastPosition;	
 	private GameObject[] pitBox;
-	private int isPitting = 0;
-	private float tyreHPMax = 100f;
-	private float carHPMax = 100f;	
+	private int isPitting = 0;	
+	private float carHPMax = 100f;
+    public float tyreHPMax;	
 	private float driverForm;
     private float teamSpeed;
     public float driverspeed;
@@ -32,8 +32,18 @@ public class Lapping : MonoBehaviour {
     public float distanceGap;
     private float engineSpeed;
     private float engineReliability;
-    
+    public float tyreSpeed;
+    public float finishTime;
 
+    public bool pitCalled;
+    public string tyreChoice;
+    public float refuelChoice;
+    public int tyreCompoundSelector;
+
+
+    public bool playerCar1;
+    public bool playerCar2;
+            
 	[Range(1,5)]
 	public int paceNumber = 1;
 
@@ -58,6 +68,8 @@ public class Lapping : MonoBehaviour {
 	Dictionary<int, float> LapTimes = new Dictionary<int, float> ();
     Dictionary<string, float> EngineSpeeds = new Dictionary<string, float>();
     Dictionary<string, float> EngineHP = new Dictionary<string, float>();
+    Dictionary<string, float> TyreSpeed = new Dictionary<string, float>();
+    Dictionary<string, float> TyreDurability = new Dictionary<string, float>();
     public float personalTimer;
 	public float personalTimerTotal;
 	public int raceDistance;
@@ -66,6 +78,7 @@ public class Lapping : MonoBehaviour {
 	public float debugTestSpeed;
     private bool raceStartChecker;
     private float accelSpeed;
+    public string tyreCompound;
     //Rigidbody2D carRB;
 
     [Header("Stats")]
@@ -94,11 +107,7 @@ public class Lapping : MonoBehaviour {
 
 
     void Start () {
-
-
-
-
-
+        
 		//carRB = gameObject.GetComponent<Rigidbody2D>();
 
 
@@ -108,18 +117,18 @@ public class Lapping : MonoBehaviour {
         crashEnabled = 0;
 
 		//List of Team Performances
-		Teams.Add ("Ferrari", 15);
-		Teams.Add ("BMW", 15);
-		Teams.Add ("Ravel", 12);
-		Teams.Add ("Audi", 10);
-		Teams.Add ("Etihad", 6);
+		Teams.Add ("Ferrari", 14);
+		Teams.Add ("BMW", 18);
+		Teams.Add ("Ravel", 15);
+		Teams.Add ("Audi", 18);
+		Teams.Add ("Etihad", 12);
 		Teams.Add ("Stacey", 8);
 		Teams.Add ("Williams", 10);
 		Teams.Add ("Schumacher", 5);
 		Teams.Add ("Kitano", 4);
-		Teams.Add ("Conrad", 15);
+		Teams.Add ("Conrad", 14);
         Teams.Add("Alfa Romeo", 5);
-        Teams.Add("Force One", 3);
+        Teams.Add("Force One", 1);
 
         //List of Engine Speeds
         EngineSpeeds.Add("Ferrari", 12);
@@ -129,13 +138,24 @@ public class Lapping : MonoBehaviour {
         EngineSpeeds.Add("Honda", 10);
 
         //List of Engine Reliabilities
-        EngineHP.Add("Ferrari", 2f);
+        EngineHP.Add("Ferrari", 0.6f);
         EngineHP.Add("BMW", 0.1f);
         EngineHP.Add("Audi", 0.2f);
-        EngineHP.Add("Cornald", 1);
-        EngineHP.Add("Honda", 1);
+        EngineHP.Add("Cornald", 0.6f);
+        EngineHP.Add("Honda", 0.6f);
 
-        raceDistance = 5;
+        //List of Tyre Speeds
+        TyreSpeed.Add("Hard", 3);        
+        TyreSpeed.Add("Soft", 5);
+        TyreSpeed.Add("Wet", 0);
+
+        //List of Tyre Durabilities
+        TyreDurability.Add("Hard", 80);        
+        TyreDurability.Add("Soft", 40);
+        TyreDurability.Add("Wet", 200);
+
+        //How many laps is the race distance?
+        raceDistance = 10;
 
 
         //Retrieve team and engine values according to the names
@@ -150,25 +170,84 @@ public class Lapping : MonoBehaviour {
 		Initials.GetComponent<TextMeshPro>().color = teamColor2;
 		Instantiate (Initials, gameObject.transform.position, Quaternion.identity, gameObject.transform);
 
+        //-------------
 		//Starting strategy of the driver
 		carHP = carHPMax;
-		tyreHP = tyreHPMax;
-		for (int i = 0; i < GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars.Length; i++){
-
-			if (GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().OnTrack == 1) {
-				if (GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().drivername != drivername && GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().teamname == teamname) {
-
-					TheOtherCarFuel = GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars [i].GetComponent<Lapping> ().fuel;
-					fuel = TheOtherCarFuel + 10f;
-
-				}
-
-			}
-			}
 
 
+        if (playerCar1 == false && playerCar2 == false)
+        {
+            int randomTyrePicker = Random.Range(1, 3);
+
+            if (randomTyrePicker == 1)
+            {
+
+                tyreCompound = "Soft";
+                tyreHP = TyreDurability[tyreCompound];
+                tyreHPMax = TyreDurability[tyreCompound];
+                tyreSpeed = TyreSpeed[tyreCompound];
+
+            }
+            else if (randomTyrePicker == 2)
+            {
+
+                tyreCompound = "Hard";
+                tyreHP = TyreDurability[tyreCompound];
+                tyreHPMax = TyreDurability[tyreCompound];
+                tyreSpeed = TyreSpeed[tyreCompound];
+
+            }
+
+            for (int i = 0; i < GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars.Length; i++)
+            {
+
+                if (GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars[i].GetComponent<Lapping>().OnTrack == 1)
+                {
+                    if (GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars[i].GetComponent<Lapping>().drivername != drivername && GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars[i].GetComponent<Lapping>().teamname == teamname)
+                    {
+
+                        TheOtherCarFuel = GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars[i].GetComponent<Lapping>().fuel;
+                        fuel = TheOtherCarFuel + 10f;
+
+                    }
+
+                }
+            }
+
+        }
+       
+        if (playerCar1 == true)
+        {
+
+            fuel = float.Parse(GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().refuelAmount.text);
+            tyreCompoundSelector = GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().tyreChoice.value;
+
+            if (tyreCompoundSelector == 0) { tyreCompound = "Soft"; }
+            if (tyreCompoundSelector == 1) { tyreCompound = "Hard"; }
+            if (tyreCompoundSelector == 2) { tyreCompound = "Wet"; }
+
+            tyreHP = TyreDurability[tyreCompound];
+            tyreHPMax = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+        }
+
+		
+
+        if (playerCar2 == true)
+        {
 
 
+
+
+        }
+
+
+
+
+
+        //End of strategy part
+        //------------
 
 		driverForm = Random.Range (0.1f, 0.6f);
 		carImage = car.GetComponent<SpriteRenderer>();
@@ -197,7 +276,6 @@ public class Lapping : MonoBehaviour {
     void CalculateSpeed(){
 
 		Random.InitState (System.DateTime.Now.Millisecond);
-		//Random.seed = System.DateTime.Now.Millisecond;
 		mistakeChance = Random.Range (0f, 50f);
 
 
@@ -209,7 +287,7 @@ public class Lapping : MonoBehaviour {
             carspeed = 0;
             accelSpeed = 0;
             					
-		} else if (Random.Range (0f, 500f) <= engineReliability && isPitting == 0 && fuel > 0 && carHP > 0 && crashEnabled == 1 && isEngineDied == 0)
+		} else if (Random.Range (0f, 500f) <= engineReliability && isPitting == 0 && fuel > 0 && carHP > 0 && crashEnabled == 1 && isEngineDied == 0 && lap > 2)
         {
             Debug.Log(drivername + " has engine problem!");
             Instantiate(StartTheRace.smoke, gameObject.transform.position, Quaternion.identity, gameObject.transform);
@@ -227,17 +305,22 @@ public class Lapping : MonoBehaviour {
 		driverspeed = (driverskill * 0.1f) * driverForm;
 		if (fuel > 0 && carHP > 0) {
 
-			if ((mistakeSkill + mistakeChance) < 100){
+			if ((mistakeSkill + mistakeChance) < 100 && isPitting == 0 && fuel > 0 && carHP > 0){
                                 
                 Debug.Log (drivername + " made a mistake!");
                 Instantiate(StartTheRace.mistake, gameObject.transform.position + transform.up * 0.3f, Quaternion.identity, gameObject.transform);
-                carHP = carHP - 5;
+                carHP = carHP - 10;
 				driverForm = 0.1f;
 
 			} 
 
+            if (tyreHP < 10)
+            {
+                tyreSpeed = 1;
 
-			carspeed = ((tyreHP * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + debugTestSpeed;
+            }
+
+			carspeed = ((tyreSpeed * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + paceNumber * 0.1f + revNumber * 0.1f + debugTestSpeed;
 			
 
 		} else if (isRetired == 0) {
@@ -269,12 +352,120 @@ public class Lapping : MonoBehaviour {
 	}
 
 
+    IEnumerator PitStopPlayer()
+    {
 
 
-	IEnumerator PitStop(){
-	
-		tyreHP = tyreHPMax;
-		carHP = carHP + 30;
+
+        if (tyreChoice == "Soft")
+        {
+
+            tyreCompound = "Soft";
+            tyreHP = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+        }
+        else if (tyreChoice == "Hard")
+        {
+
+            tyreCompound = "Hard";
+            tyreHP = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+        }
+        else if (tyreChoice == "Wet")
+        {
+            tyreCompound = "Wet";
+            tyreHP = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+
+        }
+        carHP = carHP + 30;
+        carHP = (carHP > carHPMax) ? carHPMax : carHP;
+        status = "pitstop";
+
+
+        switch (Random.Range(1, 4))
+        {
+
+            case 1:
+                fuel = fuel + 25;
+                Debug.Log(drivername + " Pitting");
+                yield return new WaitForSeconds(18f);
+                break;
+            case 2:
+                fuel = fuel + 35;
+                Debug.Log(drivername + " Pitting");
+                yield return new WaitForSeconds(18.5f);
+                break;
+            case 3:
+                fuel = fuel + 45;
+                Debug.Log(drivername + " Pitting");
+                yield return new WaitForSeconds(19f);
+                break;
+        }
+
+
+        Debug.Log(drivername + " is exiting pits!");
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            checkpoints = checkpoints + 1;
+            if (points[i].GetComponent<Checkpoints>().pitExit == true)
+            {
+                x = i + 1;
+                gameObject.transform.position = points[i].transform.position;
+                accelSpeed = 0;
+                break;
+            }
+
+
+
+        }
+
+
+
+        wearChecker = 0;
+        CalculateSpeed();
+        carImage = car.GetComponent<SpriteRenderer>();
+        carImage.enabled = true;
+        pitCounter += 1;
+        isPitting = 0;
+        distanceGap = distanceGap + GameObject.Find("racetrack").GetComponent<StartTheRace>().pitLaneGapDistance;
+        status = "";
+
+
+
+
+
+
+    }
+
+
+
+
+    IEnumerator PitStop(){
+
+        int randomTyrePicker = Random.Range(1, 3);
+
+        if (randomTyrePicker == 1)
+        {
+
+            tyreCompound = "Soft";
+            tyreHP = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+        }
+        else if (randomTyrePicker == 2)
+        {
+
+            tyreCompound = "Hard";
+            tyreHP = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
+
+        }
+        carHP = carHP + 30;
 		carHP = (carHP > carHPMax) ? carHPMax : carHP;
 		status = "pitstop";
 
@@ -345,7 +536,7 @@ public class Lapping : MonoBehaviour {
 		switch (paceNumber) {
 
 		case 1:
-			tyreWear = tyreWear + 0.1f;
+			tyreWear = tyreWear + 0.7f;
 			fuelBurn = fuelBurn + 0.5f;
 			carWear = carWear + 0.1f;
 			break;
@@ -374,7 +565,7 @@ public class Lapping : MonoBehaviour {
 		switch (revNumber) {
 
 		case 1:
-			tyreWear = tyreWear + 0.5f;
+			tyreWear = tyreWear + 0.7f;
 			fuelBurn = fuelBurn + 0.5f;
 			carWear = carWear + 0.1f;
 			break;
@@ -427,24 +618,12 @@ public class Lapping : MonoBehaviour {
 	
 	}
 
-	/*void onCollisionExit2D (Collision2D Collision) {
-		
-		Debug.Log (drivername + " No more collision");
-		carCollider = car.GetComponent<CircleCollider2D> ();
-		carCollider.enabled = true;
-
-	}*/
+	
 
 
 	void FixedUpdate () {
 
-
-        /*if (raceFinished == 0)
-        {
-            personalTimer = personalTimer + Time.deltaTime;
-        }*/
-               
-
+        
         if (isPitting == 0)
         {
 
@@ -481,9 +660,9 @@ public class Lapping : MonoBehaviour {
                 {
 
                     Debug.Log(drivername + " finished the race!");
+                    finishTime = StartTheRace.raceTimer;
                     finalDistance = distanceTraveled;
                     raceFinished = 1;
-                    //distanceTraveled += 5000f;
                     x = 0;
                     gameObject.transform.position = pitBox[pitBoxNumber].transform.position;
                     isPitting = 1;                    
@@ -494,9 +673,7 @@ public class Lapping : MonoBehaviour {
                 {
                     x = 0;
                     LapTimes.Add(lap, StartTheRace.raceTimer);
-                    //personalTimer = 0;
                     lap = lap + 1;
-                    //distanceTraveled += 5000f;
                     driverForm = Random.Range(0.1f, 0.6f);                
                 }
                 
@@ -515,8 +692,7 @@ public class Lapping : MonoBehaviour {
                     StartCoroutine(PitStop());
                     LapTimes.Add(lap, (StartTheRace.raceTimer+10));
                     personalTimer = 0;
-                    lap = lap + 1;
-                    //distanceTraveled += 5000f;
+                    lap = lap + 1;                    
                     driverForm = Random.Range(0.1f, 0.6f);
                     accelSpeed = 0;
                     CalculateSpeed();
@@ -534,70 +710,12 @@ public class Lapping : MonoBehaviour {
                 
             x = x + 1;
             checkpoints = checkpoints + 1;
-            if (x >= points.Length) x = 0;
-			//distanceTraveled += 750f;
-			
-
-            
-
-
-
-
-
-            
-            
-            
+            if (x >= points.Length) x = 0;            
+                        
             		
 		}
 
-		/*if (x >= (points.Length)) {
 		
-
-			if (lap == raceDistance || GameObject.Find("racetrack").GetComponent<EndRace>().leaderFinished == 1) {
-			
-				Debug.Log (drivername + " finished the race!");
-				raceFinished = 1;
-				distanceTraveled += 5000f;
-				x = 0;
-				gameObject.transform.position = pitBox [pitBoxNumber].transform.position;
-				isPitting = 1;
-				GameObject.Find ("racetrack").GetComponent<EndRace> ().RaceFinish (gameObject);
-
-			
-			}
-
-
-
-
-			if (fuel < 15 && raceFinished == 0) {
-				Debug.Log (drivername + " is entering to pits");
-				isPitting = 1;
-				wearChecker = 1;
-				carspeed = 0;
-				gameObject.transform.position = pitBox [pitBoxNumber].transform.position;
-				//carImage = car.GetComponent<SpriteRenderer>();
-				//carImage.enabled = false;
-				StartCoroutine (PitStop ());
-
-				x = 0;
-				LapTimes.Add (lap, personalTimer);
-				personalTimer = 0;
-				lap = lap + 1;
-				distanceTraveled += 5000f;
-				driverForm = Random.Range (0.1f, 0.6f);
-				CalculateSpeed ();
-
-			
-			} else if (raceFinished == 0) {
-				x = 0;
-				LapTimes.Add (lap, personalTimer);
-				personalTimer = 0;
-				lap = lap + 1;
-				distanceTraveled += 5000f;
-				driverForm = Random.Range (0.1f, 0.6f);
-				CalculateSpeed ();
-			}
-		}*/
 
 
         //If not in the pits, go towards the next checkpoint

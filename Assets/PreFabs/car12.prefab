@@ -104,6 +104,7 @@ MonoBehaviour:
   status: 
   isRetired: 0
   isCrashed: 0
+  isEngineDied: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -112,7 +113,7 @@ MonoBehaviour:
   pitCounter: 0
   debugTestSpeed: 0
   driverskill: 2
-  qualifyingNumber: 3
+  qualifyingNumber: 4
   mistakeSkill: 97
   crashRate: 3
   drivername: JStacey

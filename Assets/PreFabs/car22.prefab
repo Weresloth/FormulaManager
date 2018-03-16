@@ -104,6 +104,7 @@ MonoBehaviour:
   status: 
   isRetired: 0
   isCrashed: 0
+  isEngineDied: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -114,7 +115,7 @@ MonoBehaviour:
   driverskill: 1
   qualifyingNumber: 5
   mistakeSkill: 97
-  crashRate: 3
+  crashRate: 2.47
   drivername: Wehrlein
   driverShort: PW
   teamname: Alfa Romeo

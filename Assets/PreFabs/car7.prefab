@@ -93,7 +93,7 @@ MonoBehaviour:
   car: {fileID: 1955835884581856}
   carspeed: 0.3
   lap: 1
-  fuel: 30
+  fuel: 35
   distanceTraveled: 0
   driverspeed: 20
   crashEnabled: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   status: 
   isRetired: 0
   isCrashed: 0
+  isEngineDied: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -114,7 +115,7 @@ MonoBehaviour:
   driverskill: 3
   qualifyingNumber: 2
   mistakeSkill: 97
-  crashRate: 2
+  crashRate: 1.3
   drivername: Lavoie
   driverShort: LL
   teamname: Audi
