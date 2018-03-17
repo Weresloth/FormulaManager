@@ -113,6 +113,7 @@ public class EndRace : MonoBehaviour {
 		Debug.Log("We reached to the endrace method, yaay!");
         finishingCar.GetComponent<Lapping>().finalDistance = finishingCar.GetComponent<Lapping>().finalDistance + (500 - positionSorter);
         finishingCar.GetComponent<Lapping>().status = "finished";
+        positionSorter = positionSorter + 20;
         checkeredFlag = 1;
         resulted += 1;
         leaderFinished = 1;

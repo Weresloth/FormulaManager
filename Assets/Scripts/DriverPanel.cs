@@ -19,7 +19,9 @@ public class DriverPanel : MonoBehaviour {
     public Image driverPanel;
     public InputField refuelAmount;
     public Dropdown tyreChoice;
-	
+    public TMP_Text status;
+    public TMP_Text tyreCompound;
+    	
 	void Start () {
 
 
@@ -157,17 +159,24 @@ public class DriverPanel : MonoBehaviour {
 
 	void Update () {
 
-
-
-
-
         tyreCondition.value = CalculateTyreHP();
-
+        tyreCompound.text = displayedCar.GetComponent<Lapping>().tyreCompound;
+        status.text = displayedCar.GetComponent<Lapping>().status;
         displayedCar.GetComponent<Lapping>().paceNumber = (int)paceSlider.value;
         displayedCar.GetComponent<Lapping>().revNumber = (int)revSlider.value;
-        fuelAmount.text = displayedCar.GetComponent<Lapping>().fuel.ToString();
 
 
+        fuelAmount.text = string.Format("{0:00}" ,displayedCar.GetComponent<Lapping>().fuel);
+
+        if (pitcall.isOn == true)
+        {
+            displayedCar.GetComponent<Lapping>().pitCalled = true;
+
+        } else if (pitcall.isOn == false)
+        {
+            displayedCar.GetComponent<Lapping>().pitCalled = false;
+
+        }
 
 
     }
@@ -180,5 +189,21 @@ public class DriverPanel : MonoBehaviour {
 
     }
 
+    public void CheckFuelInput()
+    {
+
+        if (refuelAmount.text == "" || refuelAmount.text == "-" || refuelAmount.text == "0")
+        {
+
+            Debug.Log("Here it checks the text...");
+            refuelAmount.text = "5";
+            
+        }
+
+
+
+    }
+    
 
 }
+

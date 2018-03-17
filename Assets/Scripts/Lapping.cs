@@ -219,6 +219,7 @@ public class Lapping : MonoBehaviour {
         if (playerCar1 == true)
         {
 
+
             fuel = float.Parse(GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().refuelAmount.text);
             tyreCompoundSelector = GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().tyreChoice.value;
 
@@ -357,55 +358,53 @@ public class Lapping : MonoBehaviour {
 
 
 
-        if (tyreChoice == "Soft")
+        if (playerCar1 == true)
         {
+            refuelChoice = float.Parse(GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().refuelAmount.text);
+            tyreCompoundSelector = GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().tyreChoice.value;
 
-            tyreCompound = "Soft";
-            tyreHP = TyreDurability[tyreCompound];
-            tyreSpeed = TyreSpeed[tyreCompound];
-
-        }
-        else if (tyreChoice == "Hard")
+        } else if (playerCar2 == true)
         {
-
-            tyreCompound = "Hard";
-            tyreHP = TyreDurability[tyreCompound];
-            tyreSpeed = TyreSpeed[tyreCompound];
-
+            refuelChoice = float.Parse(GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().refuelAmount.text);
+            tyreCompoundSelector = GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().tyreChoice.value;
+            
         }
-        else if (tyreChoice == "Wet")
-        {
-            tyreCompound = "Wet";
-            tyreHP = TyreDurability[tyreCompound];
-            tyreSpeed = TyreSpeed[tyreCompound];
+              
+
+        if (tyreCompoundSelector == 0) { tyreCompound = "Soft"; }
+        if (tyreCompoundSelector == 1) { tyreCompound = "Hard"; }
+        if (tyreCompoundSelector == 2) { tyreCompound = "Wet"; }
+
+        
+        tyreHP = TyreDurability[tyreCompound];
+        tyreHPMax = TyreDurability[tyreCompound];
+        tyreSpeed = TyreSpeed[tyreCompound];
 
 
-        }
         carHP = carHP + 30;
         carHP = (carHP > carHPMax) ? carHPMax : carHP;
         status = "pitstop";
 
+        float refuelTime = refuelChoice - fuel;
 
-        switch (Random.Range(1, 4))
+
+        if (refuelTime < 25f)
+        {
+            yield return new WaitForSeconds(17f);
+
+        } else if (refuelTime > 25f && refuelTime < 50f)
         {
 
-            case 1:
-                fuel = fuel + 25;
-                Debug.Log(drivername + " Pitting");
-                yield return new WaitForSeconds(18f);
-                break;
-            case 2:
-                fuel = fuel + 35;
-                Debug.Log(drivername + " Pitting");
-                yield return new WaitForSeconds(18.5f);
-                break;
-            case 3:
-                fuel = fuel + 45;
-                Debug.Log(drivername + " Pitting");
-                yield return new WaitForSeconds(19f);
-                break;
+            yield return new WaitForSeconds(18f);
+
+        } else if (refuelTime > 50f)
+        {
+
+            yield return new WaitForSeconds(19f);
+
         }
 
+        fuel = refuelChoice; 
 
         Debug.Log(drivername + " is exiting pits!");
 
@@ -436,6 +435,16 @@ public class Lapping : MonoBehaviour {
         status = "";
 
 
+     
+        if (playerCar1 == true)
+        {
+            GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().pitcall.isOn = false;
+
+        }
+        else if (playerCar2 == true)
+        {
+            GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().pitcall.isOn = false;
+        }
 
 
 
@@ -682,7 +691,7 @@ public class Lapping : MonoBehaviour {
 
             if (GameObject.Find("racetrack").GetComponent<EndRace>().leaderFinished == 0 && lap < raceDistance && points[x].GetComponent<Checkpoints>().pitEnter == true)
             {
-                if (fuel < 15) {
+                if (fuel < 15 && playerCar1 == false && playerCar2 == false) {
                     Debug.Log(drivername + " entering pits!");
                     checkpoints = checkpoints + ((points.Length - x) - 1);
                     isPitting = 1;
@@ -698,6 +707,43 @@ public class Lapping : MonoBehaviour {
                     CalculateSpeed();
 
                 }
+                
+                if (playerCar1 == true && pitCalled == true)
+                {
+                    Debug.Log(drivername + " entering pits!");
+                    checkpoints = checkpoints + ((points.Length - x) - 1);
+                    isPitting = 1;
+                    wearChecker = 1;
+                    carspeed = 0;
+                    gameObject.transform.position = pitBox[pitBoxNumber].transform.position;
+                    StartCoroutine(PitStopPlayer());
+                    LapTimes.Add(lap, (StartTheRace.raceTimer + 10));
+                    personalTimer = 0;
+                    lap = lap + 1;
+                    driverForm = Random.Range(0.1f, 0.6f);
+                    accelSpeed = 0;
+                    CalculateSpeed();
+
+                }
+
+                if (playerCar2 == true && pitCalled == true)
+                {
+                    Debug.Log(drivername + " entering pits!");
+                    checkpoints = checkpoints + ((points.Length - x) - 1);
+                    isPitting = 1;
+                    wearChecker = 1;
+                    carspeed = 0;
+                    gameObject.transform.position = pitBox[pitBoxNumber].transform.position;
+                    StartCoroutine(PitStopPlayer());
+                    LapTimes.Add(lap, (StartTheRace.raceTimer + 10));
+                    personalTimer = 0;
+                    lap = lap + 1;
+                    driverForm = Random.Range(0.1f, 0.6f);
+                    accelSpeed = 0;
+                    CalculateSpeed();
+
+                }
+
 
             }
 
