@@ -106,7 +106,8 @@ MonoBehaviour:
   pitCalled: 0
   tyreChoice: 
   refuelChoice: 0
-  playerCar1: 1
+  tyreCompoundSelector: 0
+  playerCar1: 0
   playerCar2: 0
   paceNumber: 1
   revNumber: 1

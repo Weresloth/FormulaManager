@@ -155,8 +155,7 @@ public class Lapping : MonoBehaviour {
         TyreDurability.Add("Wet", 200);
 
         //How many laps is the race distance?
-        raceDistance = 10;
-
+        raceDistance = GameObject.Find("racetrack").GetComponent<StartTheRace>().raceDuration;
 
         //Retrieve team and engine values according to the names
 		teamSpeed = Teams [teamname];
@@ -238,7 +237,16 @@ public class Lapping : MonoBehaviour {
         if (playerCar2 == true)
         {
 
+            fuel = float.Parse(GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().refuelAmount.text);
+            tyreCompoundSelector = GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().tyreChoice.value;
 
+            if (tyreCompoundSelector == 0) { tyreCompound = "Soft"; }
+            if (tyreCompoundSelector == 1) { tyreCompound = "Hard"; }
+            if (tyreCompoundSelector == 2) { tyreCompound = "Wet"; }
+
+            tyreHP = TyreDurability[tyreCompound];
+            tyreHPMax = TyreDurability[tyreCompound];
+            tyreSpeed = TyreSpeed[tyreCompound];
 
 
         }
@@ -321,7 +329,7 @@ public class Lapping : MonoBehaviour {
 
             }
 
-			carspeed = ((tyreSpeed * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + paceNumber * 0.1f + revNumber * 0.1f + debugTestSpeed;
+			carspeed = ((tyreSpeed * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + (paceNumber * 0.1f)+ (revNumber * 0.1f) + debugTestSpeed;
 			
 
 		} else if (isRetired == 0) {

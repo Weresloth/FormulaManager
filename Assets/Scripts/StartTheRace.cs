@@ -8,7 +8,9 @@ using TMPro;
 public class StartTheRace : MonoBehaviour {
 
 
-	public GameObject[] Cars; 
+    public int raceDuration;
+
+    public GameObject[] Cars; 
 	public GameObject StartPosition;
 	public GameObject[] Position;
 	public TMP_Text[] DriverNames;
@@ -47,7 +49,7 @@ public class StartTheRace : MonoBehaviour {
     public static float raceTimer;
     private int raceStarted = 0;
 
-
+    
 	public void RaceStart(){
 
         raceStarted = 1;
@@ -82,8 +84,14 @@ public class StartTheRace : MonoBehaviour {
 		}
 	
 		StartCoroutine (RaceStandings ());
-        GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().ApplyTheStart();
-        //GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().ApplyTheStart();
+
+        if (DriverPanel.playerCount == 2)
+        {
+            GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().ApplyTheStart();
+            GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().ApplyTheStart();
+        }
+
+        
 
     }
 
