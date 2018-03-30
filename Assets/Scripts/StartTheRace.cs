@@ -58,8 +58,9 @@ public class StartTheRace : MonoBehaviour {
 
 		Debug.Log ("Start Button is pushed!");
 		StartCoroutine (StartWait());
-
-	}
+        StartCoroutine (GameObject.Find("WeatherControl").GetComponent<WeatherControl>().ChangeWetness());
+        StartCoroutine (GameObject.Find("WeatherControl").GetComponent<WeatherControl>().ChangeWeather());
+    }
 
 
 
@@ -160,7 +161,7 @@ public class StartTheRace : MonoBehaviour {
                             {
 
 
-                                Debug.Log("We are in the -200 part!");
+                                //Debug.Log("We are in the -200 part!");
                                 timeGap = Cars[0].GetComponent<Lapping>().distanceTraveled - Cars[i].GetComponent<Lapping>().distanceTraveled;
                                 timeGap = timeGap * 2;                                
                                 timeGapSeconds = Mathf.Floor(timeGap / 100);

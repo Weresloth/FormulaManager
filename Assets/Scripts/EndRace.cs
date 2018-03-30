@@ -24,7 +24,8 @@ public class EndRace : MonoBehaviour {
 
 	Dictionary<int, int> PointAllocation = new Dictionary<int, int>();
 
-	private int checkeredFlag = 0;
+	public int checkeredFlag = 0;
+
 	private int resulted = 0;
 
 	public GameObject resultPanel;
@@ -35,9 +36,7 @@ public class EndRace : MonoBehaviour {
 
 	private int gridSize;	
 
-	private int EndOfRaceRetirement = 0;
-
-    private float positionSorter;
+	private float positionSorter;
 
 	void Start() {
 
@@ -101,10 +100,16 @@ public class EndRace : MonoBehaviour {
 
 	public void Update(){
 
-		if (resulted >= GameObject.Find ("racetrack").GetComponent<StartTheRace> ().Cars.Length)
-			checkeredFlag = 0;
+		if (resulted >= GameObject.Find ("racetrack").GetComponent<StartTheRace>().Cars.Length)
+        {
+            checkeredFlag = 1;
+            StopCoroutine(GameObject.Find("WeatherControl").GetComponent<WeatherControl>().ChangeWetness());
+            StopCoroutine(GameObject.Find("WeatherControl").GetComponent<WeatherControl>().ChangeWeather());
 
-	}
+        }
+			
+
+    }
 
 	public void RaceFinish(GameObject finishingCar){
 	    
@@ -114,7 +119,6 @@ public class EndRace : MonoBehaviour {
         finishingCar.GetComponent<Lapping>().finalDistance = finishingCar.GetComponent<Lapping>().finalDistance + (500 - positionSorter);
         finishingCar.GetComponent<Lapping>().status = "finished";
         positionSorter = positionSorter + 20;
-        checkeredFlag = 1;
         resulted += 1;
         leaderFinished = 1;
 
