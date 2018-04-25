@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class StartTheRace : MonoBehaviour {
 
@@ -24,6 +25,8 @@ public class StartTheRace : MonoBehaviour {
 	private int raceFinished = 0;
     public float pitLaneGapDistance;
 
+    public GameObject qualifyingButton;
+    public GameObject raceButton;
 
     public GameObject pitStopPanel1;
     public GameObject pitStopPanel2;
@@ -120,13 +123,24 @@ public class StartTheRace : MonoBehaviour {
         }
 
 
+        raceButton.SetActive(true);
+        qualifyingButton.SetActive(false);
 
 		}
 
 
+    public void QuitToMainMenu()
+    {
+
+        SceneManager.LoadScene("mainMenu", LoadSceneMode.Single);
+
+    }
+
+
 	public void RaceOrder(){
-	
+	    
 		Debug.Log ("RaceOrder is called!");
+        raceButton.SetActive(false);
 		if (raceFinished == 0) {
 		
 			Cars = Cars.OrderByDescending (x => x.GetComponent<Lapping>().distanceTraveled).ToArray ();

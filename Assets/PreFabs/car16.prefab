@@ -127,14 +127,14 @@ MonoBehaviour:
   qualifyingNumber: 5
   mistakeSkill: 96
   crashRate: 2.95
-  drivername: Williams
-  driverShort: AW
+  drivername: Sirotkin
+  driverShort: SS
   teamname: Williams
-  carNumber: 0
+  carNumber: 16
   pitBoxNumber: 7
   teamColor: {r: 0.9117647, g: 0.9117647, b: 0.9117647, a: 1}
   teamColor2: {r: 0, g: 0.08965492, b: 1, a: 1}
-  enginename: Cornald
+  enginename: Mercedes
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1

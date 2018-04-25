@@ -101,6 +101,13 @@ public class Lapping : MonoBehaviour {
     public string enginename;
 
 
+    private float wetness;
+    private float wetCrashChance;
+    private float wetTyrePenalty;
+    private float wetMistakeChance;
+    private bool wrongTyres;
+    private float tempature;
+
     //public float overtakingskill;
     //private float overtakinghandicap;
     
@@ -115,33 +122,34 @@ public class Lapping : MonoBehaviour {
 		personalTimer = 0;
         accelSpeed = 0;
         crashEnabled = 0;
+        wrongTyres = false;
 
 		//List of Team Performances
-		Teams.Add ("Ferrari", 14);
-		Teams.Add ("BMW", 18);
-		Teams.Add ("Ravel", 15);
-		Teams.Add ("Audi", 18);
-		Teams.Add ("Etihad", 12);
-		Teams.Add ("Stacey", 8);
-		Teams.Add ("Williams", 10);
-		Teams.Add ("Schumacher", 5);
-		Teams.Add ("Kitano", 4);
-		Teams.Add ("Conrad", 14);
-        Teams.Add("Alfa Romeo", 5);
-        Teams.Add("Force One", 1);
+		Teams.Add ("Ferrari", 17);
+		Teams.Add ("Mercedes", 18);
+		Teams.Add ("Red Bull", 16);
+		Teams.Add ("Renault", 11);
+		Teams.Add ("McLaren", 11);
+		Teams.Add ("Toro Rosso", 8);
+		Teams.Add ("Williams", 8);
+		Teams.Add ("Jaguar", 3);
+		Teams.Add ("Sauber", 7);
+		Teams.Add ("Force India", 10);
+        Teams.Add("HAAS", 10);
+        Teams.Add("Minardi", 1);
 
         //List of Engine Speeds
         EngineSpeeds.Add("Ferrari", 12);
-        EngineSpeeds.Add("BMW", 15);
-        EngineSpeeds.Add("Audi", 12);
-        EngineSpeeds.Add("Cornald", 10);
-        EngineSpeeds.Add("Honda", 10);
+        EngineSpeeds.Add("Mercedes", 13);
+        EngineSpeeds.Add("Renault", 11);
+        EngineSpeeds.Add("Cosworth", 7);
+        EngineSpeeds.Add("Honda", 9);
 
         //List of Engine Reliabilities
         EngineHP.Add("Ferrari", 0.6f);
-        EngineHP.Add("BMW", 0.1f);
-        EngineHP.Add("Audi", 0.2f);
-        EngineHP.Add("Cornald", 0.6f);
+        EngineHP.Add("Mercedes", 0.1f);
+        EngineHP.Add("Renault", 0.2f);
+        EngineHP.Add("Cosworth", 0.6f);
         EngineHP.Add("Honda", 0.6f);
 
         //List of Tyre Speeds
@@ -172,31 +180,66 @@ public class Lapping : MonoBehaviour {
         //-------------
 		//Starting strategy of the driver
 		carHP = carHPMax;
-
+        wetness = GameObject.Find("WeatherControl").GetComponent<WeatherControl>().trackWetness;
 
         if (playerCar1 == false && playerCar2 == false)
         {
-            int randomTyrePicker = Random.Range(1, 3);
 
-            if (randomTyrePicker == 1)
+            //Deciding the tyre compound based on randomization and wetness
+            if (wetness < 30)
             {
+                int randomTyrePicker = Random.Range(1, 3);
 
-                tyreCompound = "Soft";
+                if (randomTyrePicker == 1)
+                {
+
+                    tyreCompound = "Soft";
+                    tyreHP = TyreDurability[tyreCompound];
+                    tyreHPMax = TyreDurability[tyreCompound];
+                    tyreSpeed = TyreSpeed[tyreCompound];
+
+                }
+                else if (randomTyrePicker == 2)
+                {
+
+                    tyreCompound = "Hard";
+                    tyreHP = TyreDurability[tyreCompound];
+                    tyreHPMax = TyreDurability[tyreCompound];
+                    tyreSpeed = TyreSpeed[tyreCompound];
+
+                }
+
+
+            } else if (wetness > 30)
+            {
+                tyreCompound = "Wet";
                 tyreHP = TyreDurability[tyreCompound];
                 tyreHPMax = TyreDurability[tyreCompound];
                 tyreSpeed = TyreSpeed[tyreCompound];
 
+
             }
-            else if (randomTyrePicker == 2)
+
+
+            switch (Random.Range(1, 5))
             {
 
-                tyreCompound = "Hard";
-                tyreHP = TyreDurability[tyreCompound];
-                tyreHPMax = TyreDurability[tyreCompound];
-                tyreSpeed = TyreSpeed[tyreCompound];
-
+                case 1:
+                    fuel = 25;                    
+                    break;
+                case 2:
+                    fuel = 35;                    
+                    break;
+                case 3:
+                    fuel = 40;                    
+                    break;
+                case 4:
+                    fuel = 50;
+                    break;
             }
 
+
+            //Checking fuel to make it more than the team-mate ahead
             for (int i = 0; i < GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars.Length; i++)
             {
 
@@ -212,6 +255,8 @@ public class Lapping : MonoBehaviour {
 
                 }
             }
+
+            ChangePaceAndRev();
 
         }
        
@@ -287,8 +332,91 @@ public class Lapping : MonoBehaviour {
 		Random.InitState (System.DateTime.Now.Millisecond);
 		mistakeChance = Random.Range (0f, 50f);
 
+        //Retrieve the wetness of the track
+        wetness = GameObject.Find("WeatherControl").GetComponent<WeatherControl>().trackWetness;
 
-		if (Random.Range (0f, 1000f) <= crashRate && crashEnabled == 1 && isPitting == 0 && fuel > 0 && carHP > 0 && isEngineDied == 0) {
+        //Modify crash and mistake chances according to wetness
+        if (wetness > 40 && wetness < 75)
+        {
+            wetCrashChance = 1;
+            wetMistakeChance = 1;
+
+        } else if (wetness > 75)
+        {
+            wetCrashChance = 2;
+            wetMistakeChance = 2;
+
+        } else if (wetness == 100)
+        {
+            wetCrashChance = 3;
+            wetMistakeChance = 3;
+        } else
+        {
+            wetCrashChance = 0;
+            wetMistakeChance = 0;
+        }
+
+
+        //Check tyres according to wetness
+        if (wetness > -1 && wetness < 25)
+        {
+           if (tyreCompound == "Soft" || tyreCompound == "Hard")
+            {
+                wetTyrePenalty = 1 - (wetness * 0.03f);
+                wrongTyres = false;
+            } else
+            {
+                wetTyrePenalty = -4 - (wetness * 0.03f);
+                wrongTyres = true;
+            }
+             
+        } else if (wetness > 25 && wetness < 40)
+        {
+
+            if (tyreCompound == "Soft" || tyreCompound == "Hard")
+            {
+                wetTyrePenalty = 0.3f - (wetness * 0.03f);
+                wrongTyres = false;
+            }
+            else
+            {
+                wetTyrePenalty = 0.7f - (wetness * 0.03f);
+                wrongTyres = false;
+            }
+
+        } else if (wetness > 40 && wetness < 65)
+        {
+            if (tyreCompound == "Soft" || tyreCompound == "Hard")
+            {
+                wetTyrePenalty = -1.3f - (wetness * 0.03f);
+                wrongTyres = false;
+            }
+            else
+            {
+                wetTyrePenalty = -0.1f - (wetness * 0.03f);
+                wrongTyres = false;
+
+            }
+
+        } else if (wetness > 65 && wetness < 101)
+        {
+            if (tyreCompound == "Soft" || tyreCompound == "Hard")
+            {
+                wetTyrePenalty = -6 - (wetness * 0.03f);
+                wrongTyres = true;
+            }
+            else
+            {
+                wetTyrePenalty = -1.5f - (wetness * 0.03f);
+                wrongTyres = false;
+            }
+
+        }
+
+
+
+            //Check whether the driver crashes or suffers an engine failure
+            if (Random.Range (0f, 1000f) <= (crashRate+wetCrashChance) && crashEnabled == 1 && isPitting == 0 && fuel > 0 && carHP > 0 && isEngineDied == 0) {
             Debug.Log(drivername + " has crashed! Oops!");
             status = "retired";
             isCrashed = 1;
@@ -309,12 +437,14 @@ public class Lapping : MonoBehaviour {
 
         }
 
-
-
+        
+        //Calculate driver's speed according to his skill level and his current form
 		driverspeed = (driverskill * 0.1f) * driverForm;
+
+        //If fuel and carHP are not 0, the car should move according to the speed calculated in this section
 		if (fuel > 0 && carHP > 0) {
 
-			if ((mistakeSkill + mistakeChance) < 100 && isPitting == 0 && fuel > 0 && carHP > 0){
+			if ((mistakeSkill + mistakeChance - wetMistakeChance) < 100 && isPitting == 0 && fuel > 0 && carHP > 0){
                                 
                 Debug.Log (drivername + " made a mistake!");
                 Instantiate(StartTheRace.mistake, gameObject.transform.position + transform.up * 0.3f, Quaternion.identity, gameObject.transform);
@@ -329,8 +459,12 @@ public class Lapping : MonoBehaviour {
 
             }
 
-			carspeed = ((tyreSpeed * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + (paceNumber * 0.1f)+ (revNumber * 0.1f) + debugTestSpeed;
-			
+            carspeed = ((tyreSpeed * 0.01f) - (fuel * 0.005f) + (carHP * 0.001f) + (driverspeed)) + (teamSpeed * 0.01f) + (engineSpeed * 0.05f ) + (paceNumber * 0.1f)+ (revNumber * 0.1f) + (wetTyrePenalty * 0.1f) + 0.5f + debugTestSpeed;
+			if (carspeed < 0)
+            {
+                carspeed = 0.5f;
+
+            }
 
 		} else if (isRetired == 0) {
 			carspeed = 0;
@@ -389,7 +523,7 @@ public class Lapping : MonoBehaviour {
         tyreSpeed = TyreSpeed[tyreCompound];
 
 
-        carHP = carHP + 30;
+        carHP = carHP + 60;
         carHP = (carHP > carHPMax) ? carHPMax : carHP;
         status = "pitstop";
 
@@ -464,25 +598,42 @@ public class Lapping : MonoBehaviour {
 
     IEnumerator PitStop(){
 
-        int randomTyrePicker = Random.Range(1, 3);
-
-        if (randomTyrePicker == 1)
+        paceNumber = 1;
+        revNumber = 1;
+        wetness = GameObject.Find("WeatherControl").GetComponent<WeatherControl>().trackWetness;
+        if (wetness < 30)
         {
+            int randomTyrePicker = Random.Range(1, 3);
 
-            tyreCompound = "Soft";
+            if (randomTyrePicker == 1)
+            {
+
+                tyreCompound = "Soft";
+                tyreHP = TyreDurability[tyreCompound];
+                tyreHPMax = TyreDurability[tyreCompound];
+                tyreSpeed = TyreSpeed[tyreCompound];
+
+            }
+            else if (randomTyrePicker == 2)
+            {
+
+                tyreCompound = "Hard";
+                tyreHP = TyreDurability[tyreCompound];
+                tyreHPMax = TyreDurability[tyreCompound];
+                tyreSpeed = TyreSpeed[tyreCompound];
+
+            }
+
+        } else if (wetness > 30)
+        {
+            tyreCompound = "Wet";
             tyreHP = TyreDurability[tyreCompound];
+            tyreHPMax = TyreDurability[tyreCompound];
             tyreSpeed = TyreSpeed[tyreCompound];
 
         }
-        else if (randomTyrePicker == 2)
-        {
-
-            tyreCompound = "Hard";
-            tyreHP = TyreDurability[tyreCompound];
-            tyreSpeed = TyreSpeed[tyreCompound];
-
-        }
-        carHP = carHP + 30;
+        
+        carHP = carHP + 60;
 		carHP = (carHP > carHPMax) ? carHPMax : carHP;
 		status = "pitstop";
 
@@ -500,7 +651,7 @@ public class Lapping : MonoBehaviour {
 			yield return new WaitForSeconds(18.5f);
 			break;
 		case 3:
-			fuel = fuel + 45;
+			fuel = fuel + 50;
 			Debug.Log (drivername + " Pitting");
 			yield return new WaitForSeconds(19f);
 			break;
@@ -534,7 +685,7 @@ public class Lapping : MonoBehaviour {
 		isPitting = 0;
         distanceGap = distanceGap + GameObject.Find("racetrack").GetComponent<StartTheRace>().pitLaneGapDistance;
         status = "";
-        
+        ChangePaceAndRev();
 
 		
 			
@@ -545,10 +696,19 @@ public class Lapping : MonoBehaviour {
 
 	IEnumerator CalculateWears(){
 
-		wearChecker = 1;
+
+        tempature = GameObject.Find("WeatherControl").GetComponent<WeatherControl>().tempature;
+        wearChecker = 1;
 		tyreWear = 0f;
 		fuelBurn = 0f;
 		carWear = 0f;
+
+        //Tempature affecting the tyre wear
+        if (tempature > 28)
+        {
+            tyreWear = tyreWear + 0.2f;
+        }
+
 
 		switch (paceNumber) {
 
@@ -608,7 +768,13 @@ public class Lapping : MonoBehaviour {
 		fuel = (fuel < 0) ? 0 : fuel; 
 		carHP = (carHP < 0) ? 0 : carHP;
 		tyreHP = (tyreHP < 0) ? 0 : tyreHP;
-		yield return new WaitForSeconds(5f);
+        if (playerCar1 == false && playerCar2 == false)
+        {
+            ChangePaceAndRev();
+        }
+            
+
+        yield return new WaitForSeconds(5f);
 
 		if (isPitting == 0) wearChecker = 0;
 
@@ -635,7 +801,40 @@ public class Lapping : MonoBehaviour {
 	
 	}
 
-	
+
+    //AI picks random pace/rev values according to their car condition
+    void ChangePaceAndRev() {
+
+        if (carHP > 50 && fuel > 50)
+        {
+            paceNumber = Random.Range(3, 5);
+            revNumber = Random.Range(2, 3);
+        } else if (carHP < 30 && fuel < 30)
+        {
+            paceNumber = Random.Range(1, 3);
+            revNumber = Random.Range(1, 2);
+        }
+        else
+        {
+            paceNumber = Random.Range(2, 4);
+            revNumber = Random.Range(1, 3);
+        }
+
+        if (tyreHP < 20)
+        {
+            paceNumber = Random.Range(1, 2);
+            revNumber = Random.Range(1, 2);
+
+        }
+
+        if (fuel < 10)
+        {
+            paceNumber = 1;
+            revNumber = 1;
+
+        }
+
+    }
 
 
 	void FixedUpdate () {
@@ -651,7 +850,7 @@ public class Lapping : MonoBehaviour {
         if (fuel > 0 && carHP > 0)
         {
             accelSpeed = accelSpeed + 0.0001f;
-            carspeed = carspeed + accelSpeed;
+            carspeed = carspeed + (accelSpeed/2);
             
         }
 
@@ -710,6 +909,22 @@ public class Lapping : MonoBehaviour {
                     LapTimes.Add(lap, (StartTheRace.raceTimer+10));
                     personalTimer = 0;
                     lap = lap + 1;                    
+                    driverForm = Random.Range(0.1f, 0.6f);
+                    accelSpeed = 0;
+                    CalculateSpeed();
+
+                } else if (wrongTyres == true && playerCar1 == false && playerCar2 == false)
+                {
+                    Debug.Log(drivername + " entering pits!");
+                    checkpoints = checkpoints + ((points.Length - x) - 1);
+                    isPitting = 1;
+                    wearChecker = 1;
+                    carspeed = 0;
+                    gameObject.transform.position = pitBox[pitBoxNumber].transform.position;
+                    StartCoroutine(PitStop());
+                    LapTimes.Add(lap, (StartTheRace.raceTimer + 10));
+                    personalTimer = 0;
+                    lap = lap + 1;
                     driverForm = Random.Range(0.1f, 0.6f);
                     accelSpeed = 0;
                     CalculateSpeed();

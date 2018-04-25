@@ -93,14 +93,20 @@ MonoBehaviour:
   car: {fileID: 1984074205227392}
   carspeed: 0.3
   lap: 1
+  tyreHP: 0
   fuel: 35
   distanceTraveled: 0
+  tyreHPMax: 0
   driverspeed: 20
   crashEnabled: 0
   finalDistance: 0
   distanceGap: 0
   tyreSpeed: 0
   finishTime: 0
+  pitCalled: 0
+  tyreChoice: 
+  refuelChoice: 0
+  tyreCompoundSelector: 0
   playerCar1: 0
   playerCar2: 0
   paceNumber: 1
@@ -117,18 +123,18 @@ MonoBehaviour:
   pitCounter: 0
   debugTestSpeed: 0
   tyreCompound: 
-  driverskill: 3
+  driverskill: 4
   qualifyingNumber: 1
   mistakeSkill: 98
   crashRate: 1
-  drivername: Giovinazzi
-  driverShort: AG
-  teamname: BMW
-  carNumber: 0
+  drivername: Hamilton
+  driverShort: LH
+  teamname: Mercedes
+  carNumber: 1
   pitBoxNumber: 0
-  teamColor: {r: 0.17647058, g: 0.48884383, b: 1, a: 1}
-  teamColor2: {r: 1, g: 1, b: 1, a: 1}
-  enginename: BMW
+  teamColor: {r: 0.75735295, g: 0.75735295, b: 0.75735295, a: 1}
+  teamColor2: {r: 0.007352948, g: 0.38387427, b: 1, a: 1}
+  enginename: Mercedes
 --- !u!212 &212915267019022116
 SpriteRenderer:
   m_ObjectHideFlags: 1

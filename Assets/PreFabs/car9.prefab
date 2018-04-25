@@ -103,6 +103,10 @@ MonoBehaviour:
   distanceGap: 0
   tyreSpeed: 0
   finishTime: 0
+  pitCalled: 0
+  tyreChoice: 
+  refuelChoice: 0
+  tyreCompoundSelector: 0
   playerCar1: 0
   playerCar2: 0
   paceNumber: 1
@@ -119,18 +123,18 @@ MonoBehaviour:
   pitCounter: 0
   debugTestSpeed: 0
   tyreCompound: 
-  driverskill: 3
-  qualifyingNumber: 2
+  driverskill: 4
+  qualifyingNumber: 3.5
   mistakeSkill: 97
-  crashRate: 2.29
-  drivername: Partanen
-  driverShort: TP
-  teamname: Etihad
-  carNumber: 0
+  crashRate: 1
+  drivername: Alonso
+  driverShort: FA
+  teamname: McLaren
+  carNumber: 9
   pitBoxNumber: 4
   teamColor: {r: 0.9558824, g: 0.61288923, b: 0.09839964, a: 1}
   teamColor2: {r: 1, g: 1, b: 1, a: 1}
-  enginename: BMW
+  enginename: Renault
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1

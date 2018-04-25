@@ -93,12 +93,22 @@ MonoBehaviour:
   car: {fileID: 1955835884581856}
   carspeed: 0.3
   lap: 1
+  tyreHP: 0
   fuel: 35
   distanceTraveled: 0
+  tyreHPMax: 0
   driverspeed: 20
   crashEnabled: 0
   finalDistance: 0
   distanceGap: 0
+  tyreSpeed: 0
+  finishTime: 0
+  pitCalled: 0
+  tyreChoice: 
+  refuelChoice: 0
+  tyreCompoundSelector: 0
+  playerCar1: 0
+  playerCar2: 0
   paceNumber: 1
   revNumber: 1
   status: 
@@ -112,18 +122,19 @@ MonoBehaviour:
   raceFinished: 0
   pitCounter: 0
   debugTestSpeed: 0
+  tyreCompound: 
   driverskill: 1
-  qualifyingNumber: 5
+  qualifyingNumber: 3.5
   mistakeSkill: 97
   crashRate: 2
-  drivername: Leclerc
-  driverShort: CL
-  teamname: Force One
-  carNumber: 0
+  drivername: Perez
+  driverShort: SP
+  teamname: Force India
+  carNumber: 23
   pitBoxNumber: 11
-  teamColor: {r: 1, g: 0.058823526, b: 0.81825525, a: 1}
+  teamColor: {r: 1, g: 0.50735295, b: 0.904868, a: 1}
   teamColor2: {r: 0.051470578, g: 0.29350942, b: 1, a: 1}
-  enginename: BMW
+  enginename: Mercedes
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1

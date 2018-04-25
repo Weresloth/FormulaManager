@@ -127,14 +127,14 @@ MonoBehaviour:
   qualifyingNumber: 5
   mistakeSkill: 96
   crashRate: 2.63
-  drivername: Kotayari
-  driverShort: HK
-  teamname: Kitano
-  carNumber: 0
+  drivername: Ericsson
+  driverShort: ME
+  teamname: Sauber
+  carNumber: 17
   pitBoxNumber: 8
   teamColor: {r: 1, g: 1, b: 1, a: 1}
   teamColor2: {r: 1, g: 0, b: 0, a: 1}
-  enginename: Honda
+  enginename: Ferrari
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1

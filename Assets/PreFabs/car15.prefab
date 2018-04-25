@@ -93,12 +93,22 @@ MonoBehaviour:
   car: {fileID: 1955835884581856}
   carspeed: 0.3
   lap: 1
+  tyreHP: 0
   fuel: 35
   distanceTraveled: 0
+  tyreHPMax: 0
   driverspeed: 20
   crashEnabled: 0
   finalDistance: 0
   distanceGap: 0
+  tyreSpeed: 0
+  finishTime: 0
+  pitCalled: 0
+  tyreChoice: 
+  refuelChoice: 0
+  tyreCompoundSelector: 0
+  playerCar1: 0
+  playerCar2: 0
   paceNumber: 1
   revNumber: 1
   status: 
@@ -112,18 +122,19 @@ MonoBehaviour:
   raceFinished: 0
   pitCounter: 0
   debugTestSpeed: 0
+  tyreCompound: 
   driverskill: 1
   qualifyingNumber: 4
   mistakeSkill: 97
   crashRate: 2.63
-  drivername: Tunjo
-  driverShort: OT
+  drivername: Stroll
+  driverShort: LS
   teamname: Williams
-  carNumber: 0
+  carNumber: 15
   pitBoxNumber: 7
   teamColor: {r: 0.9117647, g: 0.9117647, b: 0.9117647, a: 1}
   teamColor2: {r: 0, g: 0.08965492, b: 1, a: 1}
-  enginename: Cornald
+  enginename: Mercedes
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1

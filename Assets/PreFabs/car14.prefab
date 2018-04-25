@@ -93,17 +93,28 @@ MonoBehaviour:
   car: {fileID: 1955835884581856}
   carspeed: 0.3
   lap: 1
+  tyreHP: 0
   fuel: 35
   distanceTraveled: 0
+  tyreHPMax: 0
   driverspeed: 20
   crashEnabled: 0
   finalDistance: 0
   distanceGap: 0
+  tyreSpeed: 0
+  finishTime: 0
+  pitCalled: 0
+  tyreChoice: 
+  refuelChoice: 0
+  tyreCompoundSelector: 0
+  playerCar1: 0
+  playerCar2: 0
   paceNumber: 1
   revNumber: 1
   status: 
   isRetired: 0
   isCrashed: 0
+  isEngineDied: 0
   Initials: {fileID: 1460832055064196, guid: 268d7434ad80a424cb09be8abb372a54, type: 2}
   personalTimer: 0
   personalTimerTotal: 0
@@ -111,18 +122,19 @@ MonoBehaviour:
   raceFinished: 0
   pitCounter: 0
   debugTestSpeed: 0
+  tyreCompound: 
   driverskill: 2
-  qualifyingNumber: 3
+  qualifyingNumber: 4
   mistakeSkill: 97
   crashRate: 3
-  drivername: Udris
-  driverShort: EU
-  teamname: Conrad
-  carNumber: 0
+  drivername: Magnussen
+  driverShort: KM
+  teamname: HAAS
+  carNumber: 14
   pitBoxNumber: 6
-  teamColor: {r: 0.41327855, g: 0.5753639, b: 0.61764705, a: 1}
+  teamColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   teamColor2: {r: 1, g: 1, b: 1, a: 1}
-  enginename: Audi
+  enginename: Ferrari
 --- !u!212 &212069585439336026
 SpriteRenderer:
   m_ObjectHideFlags: 1
