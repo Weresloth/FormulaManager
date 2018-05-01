@@ -11,6 +11,7 @@ public class TimeControl : MonoBehaviour {
 
     void Start()
     {
+        Time.timeScale = 1f;
         timeIncrease = 1;
         speedCounter.text = "1x";
     }

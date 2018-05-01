@@ -43920,6 +43920,7 @@ MonoBehaviour:
     type: 2}
   mistakeSprite: {fileID: 1821178796493374, guid: 448e818a2f9da44468a211afffa1126e,
     type: 2}
+  playerCount: 0
 --- !u!114 &1384205736
 MonoBehaviour:
   m_ObjectHideFlags: 0

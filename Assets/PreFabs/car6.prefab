@@ -108,7 +108,7 @@ MonoBehaviour:
   refuelChoice: 0
   tyreCompoundSelector: 0
   playerCar1: 0
-  playerCar2: 0
+  playerCar2: 1
   paceNumber: 1
   revNumber: 1
   status: 

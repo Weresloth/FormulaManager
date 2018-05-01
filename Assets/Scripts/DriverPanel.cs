@@ -21,13 +21,14 @@ public class DriverPanel : MonoBehaviour {
     public Dropdown tyreChoice;
     public TMP_Text status;
     public TMP_Text tyreCompound;
-    public static int playerCount;
+    
     	
 	void Start () {
 
-
+        //gameObject.SetActive(false);
         carsList = GameObject.Find("racetrack").GetComponent<StartTheRace>().Cars;
 
+        
 
         for (int i = 0; i < carsList.Length; i++)
         {
@@ -37,7 +38,8 @@ public class DriverPanel : MonoBehaviour {
             {
                 if (carsList[i].GetComponent<Lapping>().playerCar1 == true)
                 {
-                    playerCount = playerCount + 1;
+
+                    GameObject.Find("racetrack").GetComponent<StartTheRace>().playerCount += 1;                    
                     displayedCar = carsList[i];
                     driverName.text = carsList[i].GetComponent<Lapping>().drivername;
                     fuelAmount.text = carsList[i].GetComponent<Lapping>().fuel.ToString();
@@ -64,7 +66,7 @@ public class DriverPanel : MonoBehaviour {
                 if (carsList[i].GetComponent<Lapping>().playerCar2 == true)
                 {
 
-                    playerCount = playerCount + 1;
+                    GameObject.Find("racetrack").GetComponent<StartTheRace>().playerCount += 1;                    
                     displayedCar = carsList[i];
                     driverName.text = carsList[i].GetComponent<Lapping>().drivername;
                     fuelAmount.text = carsList[i].GetComponent<Lapping>().fuel.ToString();
@@ -96,7 +98,7 @@ public class DriverPanel : MonoBehaviour {
 
 
 
-        if (playerCount == 0)
+        if (GameObject.Find("racetrack").GetComponent<StartTheRace>().playerCount == 0)
         {
 
             gameObject.SetActive(false);
@@ -145,7 +147,7 @@ public class DriverPanel : MonoBehaviour {
 
             }
 
-            if (carsList[i].GetComponent<Lapping>().playerCar2 == true)
+            if (carsList[i].GetComponent<Lapping>().playerCar2 == true && driverNumber == 2)
                 {
 
 

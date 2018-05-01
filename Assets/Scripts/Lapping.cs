@@ -225,13 +225,13 @@ public class Lapping : MonoBehaviour {
             {
 
                 case 1:
-                    fuel = 25;                    
-                    break;
-                case 2:
                     fuel = 35;                    
                     break;
-                case 3:
+                case 2:
                     fuel = 40;                    
+                    break;
+                case 3:
+                    fuel = 45;                    
                     break;
                 case 4:
                     fuel = 50;

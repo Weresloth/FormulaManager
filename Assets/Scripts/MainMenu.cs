@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+
 public class MainMenu : MonoBehaviour {
 
-	
+    
 	void Start () {
 		
 	}
@@ -45,6 +46,15 @@ public class MainMenu : MonoBehaviour {
 
     public void GotoRace()
     {
+
+
+
+        if (GameObject.Find("ScriptHolder").GetComponent<TeamSelector>().teamSelection.value == 0){
+
+            GameObject.Find("ScriptHolder").GetComponent<TeamSelector>().ChangeTeam();
+
+        }
+
 
         SceneManager.LoadScene("race3", LoadSceneMode.Single);
 

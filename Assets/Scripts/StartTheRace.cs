@@ -52,8 +52,16 @@ public class StartTheRace : MonoBehaviour {
     public static float raceTimer;
     private int raceStarted = 0;
 
-    
-	public void RaceStart(){
+    public int playerCount;
+
+    void Start()
+    {
+        //playerCount = 0;
+
+    }
+
+
+    public void RaceStart(){
 
         raceStarted = 1;
         smoke = smokeSprite;
@@ -89,8 +97,11 @@ public class StartTheRace : MonoBehaviour {
 	
 		StartCoroutine (RaceStandings ());
 
-        if (DriverPanel.playerCount == 2)
+        Debug.Log(playerCount);
+
+        if (playerCount == 2)
         {
+            Debug.Log("Panels should be updated");
             GameObject.Find("DriverPanel1").GetComponent<DriverPanel>().ApplyTheStart();
             GameObject.Find("DriverPanel2").GetComponent<DriverPanel>().ApplyTheStart();
         }
